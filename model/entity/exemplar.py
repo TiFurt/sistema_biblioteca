@@ -1,8 +1,8 @@
-from livro import Livro
+from model.entity.livro import Livro
 
 
 class Exemplar(Livro):
-    def __init__(self, titulo, autores, ano, isbn, edicao, editora, assuntos, numero_exemplar, circulacao):
+    def __init__(self, titulo, autores, ano, isbn, edicao, editora, assuntos, numero_exemplar, circulacao) -> None:
         super().__init__(self, titulo, autores, ano, isbn, edicao, editora, assuntos)
         self.__numero_exemplar = numero_exemplar
         self.__circulacao = circulacao
