@@ -1,3 +1,6 @@
+from xmlrpc.client import Boolean
+
+
 class Livro:
     def __init__(self, titulo, autores, ano, isbn, edicao, editora, assuntos) -> None:
         self.__titulo = titulo
@@ -7,6 +10,8 @@ class Livro:
         self.__edicao = edicao
         self.__editora = editora
         self.__assuntos = assuntos
+        self.__exemplares = []
+        self.__numero_exemplar = 0
 
     def get_titulo(self) -> str:
         return self.__titulo
@@ -50,3 +55,23 @@ class Livro:
     def set_assuntos(self, assuntos) -> None:
         self.__assuntos = assuntos
 
+    def get_exemplares(self) -> list:
+        return self.__exemplares
+
+    def add_exemplar(self, exemplar) -> None:
+        self.__exemplares.append(exemplar)
+        self.__numero_exemplar += 1
+
+    def remove_exemplar(self, exemplar) -> None:
+        self.__exemplares.remove(exemplar)
+        self.__numero_exemplar -= 1
+
+    def get_numero_exemplar(self) -> int:
+        return self.__numero_exemplar
+
+    def check_exemplar(self) -> Boolean:
+        if self.get_exemplares() == []:
+            return True
+        return False
+
+    
