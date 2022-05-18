@@ -64,17 +64,20 @@ class LivroDao:
     def get_assuntos(self, id):
         return livros[id].get_assuntos()
 
+    def add_exemplar(self, id, exemplar):
+        livros[id].add_exemplar(exemplar)
+
     def get_exemplares(self, id):
         exemplares_livro = []
-        for exemplar in exemplares:
-            if exemplar.get_livro() == id:
-                exemplares_livro.append(exemplar)
-        return exemplares_livro
+        livro = livros[id]
+        return livro.get_exemplares()
 
     def buscar_livro(self, titulo):
         for livro in livros:
             if livro.get_titulo() == titulo:
                 return livro
         return None
+
+
 
 
