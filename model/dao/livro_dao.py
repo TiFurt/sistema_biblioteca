@@ -12,6 +12,9 @@ class LivroDao:
         for livro in livros:
             nomes.append(livro.get_titulo())
         return nomes
+
+    def get_livro(self, id):
+        return livros[id]
     
     def add_livro(self, livro):
         livros.append(livro)
@@ -40,8 +43,8 @@ class LivroDao:
     def alterar_editora(self, id, editora):
         livros[id].set_editora(editora)
 
-    def alterar_assuntos(self, id, assuntos):
-        livros[id].set_assuntos(assuntos)
+    def alterar_categorias(self, id, categorias):
+        livros[id].set_categorias(categorias)
     
     def get_titulo(self, id):
         return livros[id].get_titulo()
@@ -61,8 +64,8 @@ class LivroDao:
     def get_editora(self, id):
         return livros[id].get_editora()
 
-    def get_assuntos(self, id):
-        return livros[id].get_assuntos()
+    def get_nome_categoria(self, id):
+        return livros[id].get_nome_categoria()
 
     def add_exemplar(self, id, exemplar):
         livros[id].add_exemplar(exemplar)

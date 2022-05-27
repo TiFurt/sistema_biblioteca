@@ -28,3 +28,9 @@ class CategoriaDao:
     
     def alterar_assunto(self, id, assunto):
         categorias[id].set_assunto(assunto)
+
+    def get_categoria(self, id):
+        return categorias[id]
+
+    def get_nome(self, id):
+        return categorias[id].get_nome()

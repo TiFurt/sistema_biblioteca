@@ -1,12 +1,12 @@
 class Livro:
-    def __init__(self, titulo, autores, ano, isbn, edicao, editora, assuntos) -> None:
+    def __init__(self, titulo, autores, ano, isbn, edicao, editora, categorias) -> None:
         self.__titulo = titulo
         self.__autores = autores
         self.__ano = ano
         self.__isbn = isbn
         self.__edicao = edicao
         self.__editora = editora
-        self.__assuntos = assuntos
+        self.__categorias = categorias
         self.__exemplares = []
         self.__numero_exemplar = 0
 
@@ -28,8 +28,14 @@ class Livro:
     def get_editora(self) -> str:
         return self.__editora
 
-    def get_assuntos(self) -> list:
-        return self.__assuntos
+    def get_categorias(self) -> list:
+        return self.__categorias
+    
+    def get_nome_categoria(self) -> list:
+        nomes_categorias = []
+        for categoria in self.get_categorias():
+            nomes_categorias.append(categoria.get_nome())
+        return nomes_categorias
 
     def set_titulo(self, titulo) -> None:
         self.__titulo = titulo
@@ -49,8 +55,8 @@ class Livro:
     def set_editora(self, editora) -> None:
         self.__editora = editora
 
-    def set_assuntos(self, assuntos) -> None:
-        self.__assuntos = assuntos
+    def set_categorias(self, categorias) -> list:
+        self.__categorias = categorias
 
     def get_exemplares(self) -> list:
         return self.__exemplares
