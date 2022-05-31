@@ -1,4 +1,4 @@
-from model.dao.data import livros, exemplares
+from model.dao.data import exemplares
 
 class ExemplarDao:
 
@@ -25,3 +25,5 @@ class ExemplarDao:
 
     def alterar_circulacao(self, id, circulacao):
         exemplares[id].set_circulacao(circulacao)
+
+    

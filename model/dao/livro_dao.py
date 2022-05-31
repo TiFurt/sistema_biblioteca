@@ -12,6 +12,9 @@ class LivroDao:
         for livro in livros:
             nomes.append(livro.get_titulo())
         return nomes
+
+    def get_livro(self, id):
+        return livros[id]
     
     def add_livro(self, livro):
         livros.append(livro)
@@ -40,8 +43,8 @@ class LivroDao:
     def alterar_editora(self, id, editora):
         livros[id].set_editora(editora)
 
-    def alterar_assuntos(self, id, assuntos):
-        livros[id].set_assuntos(assuntos)
+    def alterar_categorias(self, id, categorias):
+        livros[id].set_categorias(categorias)
     
     def get_titulo(self, id):
         return livros[id].get_titulo()
@@ -61,8 +64,8 @@ class LivroDao:
     def get_editora(self, id):
         return livros[id].get_editora()
 
-    def get_assuntos(self, id):
-        return livros[id].get_assuntos()
+    def get_nome_categorias(self, id):
+        return livros[id].get_nome_categorias()
 
     def add_exemplar(self, id, exemplar):
         livros[id].add_exemplar(exemplar)
@@ -72,11 +75,37 @@ class LivroDao:
         livro = livros[id]
         return livro.get_exemplares()
 
-    def buscar_livro(self, titulo):
+    def buscar_titulo(self, titulo):
+        titulo_livros = []
         for livro in livros:
-            if livro.get_titulo() == titulo:
-                return livro
-        return None
+            if titulo in livro.get_titulo():
+                titulo_livros.append(livro)
+        return titulo_livros
+    
+    def buscar_autor(self, autor):
+        autores_livros = []
+        for livro in livros:
+            if autor in livro.get_autores():
+                autores_livros.append(livro)
+        return autores_livros
+
+    def buscar_categoria(self, categoria):
+        categoria_livros = []
+        for livro in livros:
+            if categoria in livro.get_nome_categorias():
+                categoria_livros.append(livro)
+        return categoria_livros
+
+    def consultar_acervo(self, busca):
+        resutado_consulta = self.buscar_titulo(busca)
+        for livro in self.buscar_autor(busca):
+            if livro not in resutado_consulta:
+                resutado_consulta.append(livro)
+        for livro in self.buscar_categoria(busca):
+            if livro not in resutado_consulta:
+                resutado_consulta.append(livro)
+        return resutado_consulta
+
 
 
 
