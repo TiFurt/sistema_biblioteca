@@ -69,7 +69,7 @@ class Livro:
         self.__exemplares.remove(exemplar)
         self.__numero_exemplar -= 1
 
-    def get_numero_exemplar(self) -> int:
+    def get_numero_exemplares(self) -> int:
         return self.__numero_exemplar
 
     def check_exemplar(self):

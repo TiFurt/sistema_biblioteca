@@ -242,7 +242,7 @@ if __name__ == '__main__':
                                                                                     livro_toexemplar.get_edicao(),
                                                                                     livro_toexemplar.get_editora(),
                                                                                     livro_toexemplar.get_categorias(),
-                                                                                    livro_toexemplar.get_numero_exemplar(),
+                                                                                    livro_toexemplar.get_numero_exemplares(),
                                                                                     circulacao))
                                 print(f'Exemplar cadastrado com sucesso!')
                                 input('Pressione enter para continuar...')
@@ -263,7 +263,7 @@ if __name__ == '__main__':
                                 contee = 1
                                 for exemplar in lista_exemplares:
                                     print(
-                                        f'{contee} - Numero: {exemplar.get_numero_exemplar()} - Circulação: {exemplar.get_circulacao()}')
+                                        f'{contee} - Numero: {exemplar.get_numero_exemplares()} - Circulação: {exemplar.get_circulacao()}')
                                     contee += 1
                                 escolha_exemplar = int(input('Escolha um exemplar (0 para sair): ')) - 1
 
@@ -316,7 +316,7 @@ if __name__ == '__main__':
                                 contador = 0
                                 for exemplar in exemplares_livro:
                                     contador += 1
-                                    print(f'{contador} - nº{exemplar.get_numero_exemplar()} - {exemplar.get_titulo()}')
+                                    print(f'{contador} - nº{exemplar.get_numero_exemplares()} - {exemplar.get_titulo()}')
                                 input('Pressione enter para continuar...')
                                 pass
 
@@ -336,11 +336,11 @@ if __name__ == '__main__':
                                 contee = 1
                                 for exemplar in lista_exemplares:
                                     print(
-                                        f'{contee} - Numero: {exemplar.get_numero_exemplar()} - Circulação: {exemplar.get_circulacao()}')
+                                        f'{contee} - Numero: {exemplar.get_numero_exemplares()} - Circulação: {exemplar.get_circulacao()}')
                                     contee += 1
                                 escolha_exemplar = int(input('Escolha um exemplar (0 para sair): ')) - 1
                                 validacao_exemplar_excluir = input(
-                                    f'Tem certeza que deseja excluir o exemplar {lista_exemplares[escolha_exemplar].get_titulo()} Numero: {exemplar.get_numero_exemplar()}?(S/N) ').upper()
+                                    f'Tem certeza que deseja excluir o exemplar {lista_exemplares[escolha_exemplar].get_titulo()} Numero: {exemplar.get_numero_exemplares()}?(S/N) ').upper()
                                 if validacao_exemplar_excluir.split()[0][0] == 'S':
                                     lista_exemplares.pop(escolha_exemplar)
                                     print(f'Exemplar excluido com sucesso!')
@@ -458,6 +458,17 @@ if __name__ == '__main__':
                     print('Consultar Acervo')
                     busca = str(input('Digite o nome do livro, autor ou categoria que deseja cosultar: '))
                     consulta = livro_dao.consultar_acervo(busca)
+                    if consulta == []:
+                        print('Nenhum livro encontrado!')
+                    else:
+                        for livro in consulta:
+                            print('----------------------------------------------------------------------------------------------------------------------')
+                            print(f'Livro: {livro.get_titulo()} - Autores: {", ".join(livro.get_autores())} - Categoria: {", ".join(livro.get_nome_categorias())} - Número de exemplares: {livro.get_numero_exemplares()}')
+                        print('----------------------------------------------------------------------------------------------------------------------')
+                    input('Pressione enter para continuar...')
+
+                case 5:
+                    pass
 
 
 

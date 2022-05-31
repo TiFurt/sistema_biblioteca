@@ -7,7 +7,7 @@ class Exemplar(Livro):
         self.__numero_exemplar = numero_exemplar
         self.__circulacao = circulacao
 
-    def get_numero_exemplar(self):
+    def get_numero_exemplares(self):
         return self.__numero_exemplar
 
     def get_circulacao(self):

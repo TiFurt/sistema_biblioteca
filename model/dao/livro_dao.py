@@ -75,24 +75,27 @@ class LivroDao:
         livro = livros[id]
         return livro.get_exemplares()
 
+    def format_content(self, content):
+        return ''.join(content).strip().upper().replace(' ', '')
+
     def buscar_titulo(self, titulo):
         titulo_livros = []
         for livro in livros:
-            if titulo in livro.get_titulo():
+            if self.format_content(titulo) in self.format_content(livro.get_titulo()):
                 titulo_livros.append(livro)
         return titulo_livros
     
     def buscar_autor(self, autor):
         autores_livros = []
         for livro in livros:
-            if autor in livro.get_autores():
+            if self.format_content(autor) in self.format_content(livro.get_autores()):
                 autores_livros.append(livro)
         return autores_livros
 
     def buscar_categoria(self, categoria):
         categoria_livros = []
         for livro in livros:
-            if categoria in livro.get_nome_categorias():
+            if self.format_content(categoria) in self.format_content(livro.get_nome_categorias()):
                 categoria_livros.append(livro)
         return categoria_livros
 
@@ -105,8 +108,6 @@ class LivroDao:
             if livro not in resutado_consulta:
                 resutado_consulta.append(livro)
         return resutado_consulta
-
-
 
 
 
