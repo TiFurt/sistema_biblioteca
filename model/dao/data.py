@@ -1,6 +1,7 @@
 from model.entity.livro import Livro
 from model.entity.exemplar import Exemplar
 from model.entity.categoria import Categoria
+from model.entity.emprestimo import Emprestimo
 
 
 livros = [
@@ -34,3 +35,8 @@ for exemplar in exemplares:
     for livro in livros:
         if exemplar.get_titulo() == livro.get_titulo():
             livro.add_exemplar(exemplar)
+
+
+emprestimos =[
+    Emprestimo('Clean Code', 1, '20/03/22', '21/03/22', False)
+]

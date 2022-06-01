@@ -26,4 +26,5 @@ class ExemplarDao:
     def alterar_circulacao(self, id, circulacao):
         exemplares[id].set_circulacao(circulacao)
 
+
     
