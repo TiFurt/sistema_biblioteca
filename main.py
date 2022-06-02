@@ -500,6 +500,7 @@ if __name__ == '__main__':
                     opcao_gerente = int(input('Digite sua opção: '))
                     match opcao_gerente:
                         case 0: #sair
+                            print('Saindo...')
                             pass
                         case 1: #gerar relatório
                             print('Gerar Relatório')
@@ -517,23 +518,42 @@ if __name__ == '__main__':
                                         print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
                             except:
                                 print('Data inválida, favor informe novamente.')
-
                 case 4: #funcionario
                     print('''Menu Funcionário
-                            1- Novo Empréstimo
-                            2- Consultar Empréstimos
-                            3- Devolução
+                            1- Controle de Empréstimos
+                            2- Controle de Reserva
+                            3- Controle de Usuário
                             0 - Sair''')
                     menu_funcionario = int(input('Digite sua opção: '))
                     match menu_funcionario:
                         case 0:
+                            print('Saindo...')
                             pass
                         case 1: #novo empréstimo
-                            print('Novo Empréstimo')
+                            print('''Menu Emprestimo
+                                1- Novo Empréstimo
+                                2- Consultar Empréstimos
+                                3- Devolução
+                                0 - Sair''')
+                            menu_emprestimo = int(input('Digite sua opção: '))
+                            match menu_emprestimo:
+                                case 0:
+                                    print('Saindo...')
+                                    pass
+                                case 1: #novo empréstimo
+                                    print('Novo Empréstimo')
+                                    usuario_id_emprestimo = int(input('Digite o ID do usuário: '))
+                                    exemplar_id_emprestimo = int(input('Digite o ID do exemplar: '))
+                                    print(emprestimo_dao.novo_emprestimo(usuario_id_emprestimo, exemplar_id_emprestimo))
+                                case 2: #consultar empréstimos
+                                    print('Consultar Empréstimos')
+                                case 3: #devolução
+                                    print('Devolução')
                         case 2: #consultar empréstimos
                             print('Consultar Empréstimos')
                         case 3: #devolução
                             print('Devolução')
+
                 
     except ValueError:
         print('Valor invalido')
