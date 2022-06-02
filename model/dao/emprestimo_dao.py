@@ -45,8 +45,3 @@ class EmprestimoDao:
                                 return f'Usuário {usuario.get_nome()} está com débito em atraso'
                         else:
                             return f'Livro {exemplar.get_titulo()} está reservado ou emprestado.'
-                    else:
-                        return f'Exemplar {numero_exemplar} não existe'
-            else:
-                return f'Usuário com id {usuario_id} não existe'
-
