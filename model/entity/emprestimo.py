@@ -1,11 +1,12 @@
 class Emprestimo:
 
-    def __init__(self, livro, exemplar, data_emprestimo, data_devolucao, debito) -> None:
+    def __init__(self, livro, exemplar, data_emprestimo, data_devolucao, debito, usuario) -> None:
         self.__livro = livro
         self.__exemplar = exemplar
         self.__data_emprestimo = data_emprestimo
         self.__data_devolucao = data_devolucao
         self.__debito = debito
+        self.__usuario = usuario
     
     def get_livro(self):
         return self.__livro
@@ -21,3 +22,6 @@ class Emprestimo:
     
     def get_debito(self):
         return self.__debito
+
+    def get_usuario(self):
+        return self.__usuario

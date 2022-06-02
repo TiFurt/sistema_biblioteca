@@ -12,6 +12,7 @@ if __name__ == '__main__':
     categoria_dao = CategoriaDao()
     emprestimo_dao = EmprestimoDao()
 
+
     try:
 
         while True:
@@ -488,7 +489,7 @@ if __name__ == '__main__':
                                 for livro in consulta:
                                     print('----------------------------------------------------------------------------------------------------------------------')
                                     print(f'Livro: {livro.get_titulo()} - Autores: {", ".join(livro.get_autores())} - Categoria: {", ".join(livro.get_nome_categorias())} - Número de exemplares: {livro.get_numero_exemplares()}')
-                                print('----------------------------------------------------------------------------------------------------------------------')
+                                    print('----------------------------------------------------------------------------------------------------------------------')
                             input('Pressione enter para continuar...')
                         case 0: #sair
                             pass
@@ -496,8 +497,8 @@ if __name__ == '__main__':
                     print('''Menu Gerente
                             1- Gerar Relatório
                             0- Sair''')
-                    opcao_usuario = int(input('Digite sua opção: '))
-                    match opcao_usuario:
+                    opcao_gerente = int(input('Digite sua opção: '))
+                    match opcao_gerente:
                         case 0: #sair
                             pass
                         case 1: #gerar relatório
@@ -505,9 +506,17 @@ if __name__ == '__main__':
                             try:
                                 relatorio_data_inicio = input('Informe a data de início do relatório (dd/mm/aaaa): ')
                                 relatorio_data_fim = input('Informe a data de fim do relatório (dd/mm/aaaa): ')
-
+                                relatorios = emprestimo_dao.relatorio_emprestimos(relatorio_data_inicio, relatorio_data_fim)
+                                print(relatorios)
+                                if relatorios == []:
+                                    print('Nenhum empréstimo encontrado no período informado.')
+                                else:
+                                    for relatorio in relatorios:
+                                        print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
+                                        print(f'Emprestimo: Livro : {relatorio.get_livro()} | Exemplar: {relatorio.get_exemplar()} | Usuário: {relatorio.get_usuario()} | Data de Empréstimo: {relatorio.get_data_emprestimo()} | Data de Devolução: {relatorio.get_data_devolucao()}')
+                                        print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
                             except:
-                                print('Data inválida!')
+                                print('Data inválida, favor informe novamente.')
 
                 case 4: #funcionario
                     pass
