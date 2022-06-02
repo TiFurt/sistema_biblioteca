@@ -519,13 +519,21 @@ if __name__ == '__main__':
                                 print('Data inválida, favor informe novamente.')
 
                 case 4: #funcionario
-                    pass
+                    print('''Menu Funcionário
+                            1- Novo Empréstimo
+                            2- Consultar Empréstimos
+                            3- Devolução
+                            0 - Sair''')
+                    menu_funcionario = int(input('Digite sua opção: '))
+                    match menu_funcionario:
+                        case 0:
+                            pass
+                        case 1: #novo empréstimo
+                            print('Novo Empréstimo')
+                        case 2: #consultar empréstimos
+                            print('Consultar Empréstimos')
+                        case 3: #devolução
+                            print('Devolução')
                 
-
-
-
-
-
-
     except ValueError:
         print('Valor invalido')

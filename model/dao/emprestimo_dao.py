@@ -18,3 +18,7 @@ class EmprestimoDao:
                 pass
         return emprestimos_filtrados
     
+    def novo_emprestimo(self, livro, exemplar, data_emprestimo, data_devolucao, debito, usuario):
+        emprestimos.append(f'Emprestimo: {livro}, {exemplar}, {data_emprestimo}, {data_devolucao}, {debito}, {usuario}')
+        return
+
