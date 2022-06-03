@@ -25,3 +25,9 @@ class Emprestimo:
 
     def get_usuario(self):
         return self.__usuario
+
+    def set_debito(self, debito):
+        self.__debito = debito
+
+    def set_data_devolucao(self, data_devolucao):
+        self.__data_devolucao = data_devolucao

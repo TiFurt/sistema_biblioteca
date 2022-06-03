@@ -1,3 +1,4 @@
+from select import select
 from model.dao.livro_dao import LivroDao
 from model.dao.exemplar_dao import ExemplarDao
 from model.dao.categoria_dao import CategoriaDao
@@ -5,6 +6,7 @@ from model.dao.emprestimo_dao import EmprestimoDao
 from model.entity.livro import Livro
 from model.entity.exemplar import Exemplar
 from model.entity.categoria import Categoria
+from datetime import date
 
 if __name__ == '__main__':
     livro_dao = LivroDao()
@@ -514,7 +516,7 @@ if __name__ == '__main__':
                                 else:
                                     for relatorio in relatorios:
                                         print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
-                                        print(f'Emprestimo: Livro : {relatorio.get_livro()} | Exemplar: {relatorio.get_exemplar()} | Usuário: {relatorio.get_usuario()} | Data de Empréstimo: {relatorio.get_data_emprestimo()} | Data de Devolução: {relatorio.get_data_devolucao()}')
+                                        print(f'Emprestimo: Livro : {relatorio.get_livro()} | Exemplar: {relatorio.get_exemplar()} | Usuário: {relatorio.get_usuario()} | Data de Empréstimo: {relatorio.get_data_emprestimo()} | Data de Devolução: {relatorio.get_data_devolucao()} - Débito: {"Sim" if pendencia.get_debito() == True else "Não"}')
                                         print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
                             except:
                                 print('Data inválida, favor informe novamente.')
@@ -547,13 +549,32 @@ if __name__ == '__main__':
                                     print(emprestimo_dao.novo_emprestimo(usuario_id_emprestimo, exemplar_id_emprestimo))
                                 case 2: #consultar empréstimos
                                     print('Consultar Empréstimos')
+                                    try:
+                                        relatorio_data_inicio = input('Informe a data de início do relatório (dd/mm/aaaa): ')
+                                        relatorio_data_fim = input('Informe a data de fim do relatório (dd/mm/aaaa): ')
+                                        relatorios = emprestimo_dao.relatorio_emprestimos(relatorio_data_inicio, relatorio_data_fim)
+                                        print(relatorios)
+                                        if relatorios == []:
+                                            print('Nenhum empréstimo encontrado no período informado.')
+                                            input('Pressione enter para continuar...')
+                                        else:
+                                            for relatorio in relatorios:
+                                                print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
+                                                print(f'Emprestimo: Livro : {relatorio.get_livro()} | Exemplar: {relatorio.get_exemplar()} | Usuário: {relatorio.get_usuario()} | Data de Empréstimo: {relatorio.get_data_emprestimo()} | Data de Devolução: {relatorio.get_data_devolucao()} - Débito: {"Sim" if pendencia.get_debito() == True else "Não"}')
+                                                print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
+                                                input('Pressione enter para continuar...')
+                                    except:
+                                        print('Data inválida, favor informe novamente.')
                                 case 3: #devolução
                                     print('Devolução')
-                        case 2: #consultar empréstimos
-                            print('Consultar Empréstimos')
-                        case 3: #devolução
-                            print('Devolução')
-
+                                    emprestimo_id_devolucao = int(input('Digite o ID do usuário: '))
+                                    pendencias = emprestimo_dao.pendencias_emprestimo(emprestimo_id_devolucao)
+                                    for pendencia in pendencias:
+                                        print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
+                                        print(f'{pendencias.index(pendencia)} - Livro: {pendencia.get_livro()} - Exemplar: {pendencia.get_exemplar()} - Usuário: {pendencia.get_usuario()} - Data de Empréstimo: {pendencia.get_data_emprestimo()} - Data de Devolução: {pendencia.get_data_devolucao()} - Débito: {"Sim" if pendencia.get_debito() == True else "Não"}')
+                                        print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
+                                    select_pendencia = int(input('Digite o número da pendência deseja devolver: '))
+                                    pendencias[select_pendencia].set_data_devolucao(date.today().strftime("%d/%m/%Y"))
                 
     except ValueError:
         print('Valor invalido')

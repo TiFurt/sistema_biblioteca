@@ -4,6 +4,9 @@ from datetime import datetime, date, timedelta
 class EmprestimoDao:
 
     def __init__(self):
+        for emprestimo in emprestimos:
+            if date.today().strftime("%d/%m/%Y") > emprestimo.get_data_devolucao():
+                emprestimo.set_debito(True)
         pass
 
     def relatorio_emprestimos(self, input_data_inicial, input_data_final):
@@ -29,14 +32,17 @@ class EmprestimoDao:
                                         if exemplar.get_circulacao() == True:
                                             if usuario.get_tipo() == 'professor':
                                                 exemplar.set_emprestimo(True)
+                                                usuario.set_emprestimos += 1
                                                 emprestimos.append(f'Emprestimo({exemplar.get_titulo()}, {exemplar.get_numero_exemplares()}, {date.today().strftime("%d/%m/%Y")}, {(date.today() + timedelta(days=15)).strftime("%d/%m/%Y")}, {False}, {usuario.get_id()}),')
                                                 return f'Livro {exemplar.get_titulo()} emprestado para {usuario.get_nome()} até {(date.today() + timedelta(days=15)).strftime("%d/%m/%Y")}.'
                                             else:
                                                 exemplar.set_emprestimo(True)
+                                                usuario.set_emprestimos += 1
                                                 emprestimos.append(f'Emprestimo({exemplar.get_titulo()}, {exemplar.get_numero_exemplares()}, {date.today().strftime("%d/%m/%Y")}, {(date.today() + timedelta(days=10)).strftime("%d/%m/%Y")}, {False}, {usuario.get_id()}),')
                                                 return f'Livro {exemplar.get_titulo()} emprestado para {usuario.get_nome()} até {(date.today() + timedelta(days=10)).strftime("%d/%m/%Y")}.'
                                         else:
                                             exemplar.set_emprestimo(True)
+                                            usuario.set_emprestimos += 1
                                             emprestimos.append(f'Emprestimo({exemplar.get_titulo()}, {exemplar.get_numero_exemplares()}, {date.today().strftime("%d/%m/%Y")}, {(date.today() + timedelta(days=1)).strftime("%d/%m/%Y")}, {False}, {usuario.get_id()}),')
                                             return f'Livro {exemplar.get_titulo()} emprestado para {usuario.get_nome()} até {(date.today() + timedelta(days=1)).strftime("%d/%m/%Y")}.'
                                     else:
@@ -45,3 +51,22 @@ class EmprestimoDao:
                                 return f'Usuário {usuario.get_nome()} está com débito em atraso'
                         else:
                             return f'Livro {exemplar.get_titulo()} está reservado ou emprestado.'
+
+
+    def pendencias_emprestimo(self, usuario_id):
+        for usuario in usuarios:
+            if usuario.get_id() == usuario_id:
+                for emprestimo in emprestimos:
+                    pendencias = []
+                    if emprestimo.get_usuario() == usuario_id:
+                        pendencias.append(emprestimo)
+                        if pendencias != []:
+                            return pendencias
+                        else:
+                            return 'Não há pendências.'
+    
+    def devolucao_emprestimo(self, usuario_id, select_pendencia):
+        pass
+
+        
+

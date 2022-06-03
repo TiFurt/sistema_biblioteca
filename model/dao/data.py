@@ -39,7 +39,7 @@ for exemplar in exemplares:
 
 
 emprestimos =[
-    Emprestimo('Clean Code', 1, '20/03/2022', '21/03/2022', False, '001'),
+    Emprestimo('Clean Code', 1, '20/03/2022', '21/03/2022', False, 1),
 ]
 
 tipos_usuario =[
