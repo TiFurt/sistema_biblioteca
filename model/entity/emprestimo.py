@@ -28,7 +28,7 @@ class Emprestimo:
         return self.__usuario
 
     def get_id(self):
-        return self.__id
+        return int(self.__id)
 
     def set_debito(self, debito):
         self.__debito = debito
