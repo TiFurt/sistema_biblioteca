@@ -263,7 +263,7 @@ if __name__ == '__main__':
                                                                                                 livro_toexemplar.get_edicao(),
                                                                                                 livro_toexemplar.get_editora(),
                                                                                                 livro_toexemplar.get_categorias(),
-                                                                                                livro_toexemplar.get_numero_exemplares(),
+                                                                                                livro_toexemplar.get_numero_exemplares() + 1,
                                                                                                 circulacao))
                                             print(f'Exemplar cadastrado com sucesso!')
                                             input('Pressione enter para continuar...')
@@ -540,7 +540,6 @@ if __name__ == '__main__':
                                 print('Saindo...')
                                 break
                             case 1: #empréstimo
-                                emprestimo_dao.check_debito()
                                 print('''
                                     Menu Emprestimo
                                     1- Novo Empréstimo
@@ -555,9 +554,27 @@ if __name__ == '__main__':
                                     case 1: #novo empréstimo
                                         print('Novo Empréstimo')
                                         usuario_id_emprestimo = int(input('Digite o ID do usuário: '))
-                                        exemplar_id_emprestimo = int(input('Digite o ID do exemplar: '))
-                                        print(emprestimo_dao.novo_emprestimo(usuario_id_emprestimo, exemplar_id_emprestimo))
-                                        input('Pressione enter para continuar...')
+                                        cont = 0
+                                        for livro in livro_dao.listar_nomes():
+                                            cont += 1
+                                            print(f'{cont} - {livro}')
+                                        livro_id_emprestimo = int(input('Digite sua opção(0 para sair): ')) - 1
+                                        if livro_id_emprestimo == -1:
+                                            print('Saindo...')
+                                            pass
+                                        else:
+                                            cont_exemp = 0
+                                            for exemplar in livro_dao.get_exemplares(livro_id_emprestimo):
+                                                cont_exemp += 1
+                                                print(f'{cont_exemp} - {exemplar.get_titulo()} - Circulação: {"1 dia útil" if exemplar.get_circulacao() else "10 dias corridos"} - ' 
+                                                f'Emprestimo: {"Emprestado" if exemplar.get_emprestimo() else "Não Emprestado"} - Reserva: {"Reservado" if exemplar.is_reservado() else "Não Reservado"}')
+                                            exemplar_id_emprestimo = int(input('Digite sua opção(0 para sair): ')) - 1    
+                                            if exemplar_id_emprestimo == -1:
+                                                print('Saindo...')
+                                                pass
+                                            else:
+                                                print(emprestimo_dao.novo_emprestimo(usuario_id_emprestimo, livro_id_emprestimo, exemplar_id_emprestimo))
+                                                input('Pressione enter para continuar...')
                                     case 2: #consultar empréstimos
                                         print('Consultar Empréstimos')
                                         try:

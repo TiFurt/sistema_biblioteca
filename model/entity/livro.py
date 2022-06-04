@@ -8,7 +8,6 @@ class Livro:
         self.__editora = editora
         self.__categorias = categorias
         self.__exemplares = []
-        self.__numero_exemplar = 0
 
     def get_titulo(self) -> str:
         return self.__titulo
@@ -63,14 +62,14 @@ class Livro:
 
     def add_exemplar(self, exemplar) -> None:
         self.__exemplares.append(exemplar)
-        self.__numero_exemplar += 1
+        
 
     def remove_exemplar(self, exemplar) -> None:
         self.__exemplares.remove(exemplar)
-        self.__numero_exemplar -= 1
+        
 
     def get_numero_exemplares(self) -> int:
-        return self.__numero_exemplar
+        return len(self.__exemplares)
 
     def check_exemplar(self):
         if self.get_exemplares() == []:

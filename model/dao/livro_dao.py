@@ -71,7 +71,6 @@ class LivroDao:
         livros[id].add_exemplar(exemplar)
 
     def get_exemplares(self, id):
-        exemplares_livro = []
         livro = livros[id]
         return livro.get_exemplares()
 

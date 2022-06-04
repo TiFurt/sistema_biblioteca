@@ -1,16 +1,14 @@
-from model.dao.data import emprestimos, usuarios, exemplares
+from model.dao.data import emprestimos, usuarios, livros
 from datetime import datetime, date, timedelta
 from model.entity.emprestimo import Emprestimo
 
 class EmprestimoDao:
 
     def __init__(self):
-        pass
-    
-    def check_debito(self):
         for emprestimo in emprestimos:
             if date.today().strftime("%d/%m/%Y") > emprestimo.get_data_devolucao():
-                emprestimo.set_debito(True)    
+                emprestimo.set_debito(True)  
+        pass
 
     def relatorio_emprestimos(self, input_data_inicial, input_data_final):
         data_inicial = datetime.strptime(input_data_inicial, "%d/%m/%Y")
@@ -24,14 +22,16 @@ class EmprestimoDao:
                 pass
         return emprestimos_filtrados
     
-    def novo_emprestimo(self, usuario_id, numero_exemplar):
+    def novo_emprestimo(self, usuario_id, livro_id, numero_exemplar):
         new_id_emprestimo = emprestimos[-1].get_id() + 1
         for usuario in usuarios:
             if usuario.get_id() == usuario_id:
-                for exemplar in exemplares:
-                    if exemplar.get_numero_exemplares() == numero_exemplar:
-                        if not exemplar.get_reserva() and not exemplar.get_emprestimo():
-                            if usuario.get_debito() == False:
+                if livros[livro_id].get_numero_exemplares() != 0:
+                    exemplar = livros[livro_id].get_exemplares()[numero_exemplar]
+                    if not exemplar.get_emprestimo():
+                        if not exemplar.is_reservado() or (exemplar.is_reservado() and usuario_id ==  exemplar.get_reserva().get_usuario()):
+                            exemplar.set_not_reservado()
+                            if not usuario.get_debito():
                                     if (usuario.get_tipo() == 'professor' and usuario.get_emprestimos() < 5) or (usuario.get_tipo() != 'professor' and usuario.get_emprestimos() < 3):
                                         if exemplar.get_circulacao():
                                             if usuario.get_tipo() == 'professor':
@@ -54,7 +54,11 @@ class EmprestimoDao:
                             else:
                                 return f'Usuário {usuario.get_nome()} está com débito em atraso'
                         else:
-                            return f'Livro {exemplar.get_titulo()} está reservado ou emprestado.'
+                            return f'Livro {exemplar.get_titulo()} está reservado para outro usuário.'
+                    else:
+                        return f'Livro {exemplar.get_titulo()} está emprestado.'
+                else:
+                    return f'Livro {livros[livro_id].get_titulo()} não possui exemplares.'
 
     def pendencias_emprestimo(self, usuario_id):
         pendencias = []
@@ -73,10 +77,10 @@ class EmprestimoDao:
                 for usuario in usuarios:
                     if usuario.get_id() == emprestimo.get_usuario():
                         usuario.set_emprestimos(usuario.get_emprestimos() - 1)
-                        for exemplar in exemplares:
-                            if exemplar.get_numero_exemplares() == emprestimo.get_exemplar():
+                        for livro in livros:
+                            if livro.get_titulo() == emprestimo.get_livro() and livro.get_numero_exemplares() != 0:
+                                exemplar = livro.get_exemplares()[emprestimo.get_exemplar()-1]
                                 exemplar.set_emprestimo(False)
-                                exemplar.set_reserva(False)
                                 emprestimo.set_debito(False)
                                 return f'Livro {exemplar.get_titulo()} devolvido.'
 

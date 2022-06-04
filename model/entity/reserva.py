@@ -1,10 +1,10 @@
 class Reserva:
 
-    def __init__(self, livro, exemplar, data_reserva, data_devolucao, usuario, id, ativo) -> None:
+    def __init__(self, livro, exemplar, data_reserva, data_vencimento, usuario, id, ativo) -> None:
         self.__livro = livro
         self.__exemplar = exemplar
         self.__data_reserva = data_reserva
-        self.__data_devolucao = data_devolucao
+        self.__data_vencimento = data_vencimento
         self.__usuario = usuario
         self.__id = id
         self.__ativo = ativo
@@ -18,8 +18,8 @@ class Reserva:
     def get_data_reserva(self):
         return self.__data_reserva
 
-    def get_data_devolucao(self):
-        return self.__data_devolucao
+    def get_data_vencimento(self):
+        return self.__data_vencimento
     
     def get_usuario(self):
         return self.__usuario
