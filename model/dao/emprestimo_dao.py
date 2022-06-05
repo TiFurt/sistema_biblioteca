@@ -87,7 +87,16 @@ class EmprestimoDao:
                                 emprestimo.set_debito(False)
                                 return f'Livro {exemplar.get_titulo()} devolvido.'
 
-
-
-        
+    def relatorio_pendencias(self, input_data_inicial, input_data_final):
+        pendencias = []
+        data_inicial = datetime.strptime(input_data_inicial, "%d/%m/%Y")
+        data_final = datetime.strptime(input_data_final, "%d/%m/%Y")
+        for registro in emprestimos:
+                    data_emprestimo = datetime.strptime(registro.get_data_emprestimo(), "%d/%m/%Y")
+                    if data_inicial <= data_emprestimo <= data_final:
+                        if registro.get_debito():
+                            pendencias.append(registro)
+                    else:
+                        pass
+                    return pendencias        
 

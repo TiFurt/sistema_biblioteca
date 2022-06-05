@@ -7,6 +7,7 @@ from model.dao.reserva_dao import ReservaDao
 from model.entity.livro import Livro
 from model.entity.exemplar import Exemplar
 from model.entity.categoria import Categoria
+from model.entity.usuario import Usuario
 
 if __name__ == '__main__':
     livro_dao = LivroDao()
@@ -511,28 +512,29 @@ if __name__ == '__main__':
                         match opcao_gerente:
                             case 0: #sair
                                 print('Saindo...')
-                                pass
+                                break
                             case 1: #menu relatóro
                                 print('''
                                 Menu Relatórios
                                 1- Gerar Relatório Emprestimos
                                 2- Gerar Relatório Devoluções
+                                3- Gerar Relatório Pendencias
                                 0- Sair''')
                                 opcao_relatorios = int(input('Digite sua opção: '))
                                 match opcao_relatorios:
                                     case 0: #sair
                                         print('Saindo...')
-                                        break
+                                        pass
                                     case 1: #gerar relatório emprestimos
                                         print('Relatório de Emprestimos')
                                         try:
-                                            relatorio_data_inicio = input('Informe a data de início do relatório (dd/mm/aaaa): ')
-                                            relatorio_data_fim = input('Informe a data de fim do relatório (dd/mm/aaaa): ')
-                                            relatorios = emprestimo_dao.relatorio_emprestimos(relatorio_data_inicio, relatorio_data_fim)
-                                            if relatorios == []:
+                                            emprestimo_data_inicio = input('Informe a data de início do relatório (dd/mm/aaaa): ')
+                                            emprestimo_data_fim = input('Informe a data de fim do relatório (dd/mm/aaaa): ')
+                                            emprestimos = emprestimo_dao.relatorio_emprestimos(emprestimo_data_inicio, emprestimo_data_fim)
+                                            if emprestimos == []:
                                                 print('Nenhum empréstimo encontrado no período informado.')
                                             else:
-                                                for relatorio in relatorios:
+                                                for relatorio in emprestimos:
                                                     print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
                                                     print(f'Emprestimo: Livro : {relatorio.get_livro()} | Exemplar: {relatorio.get_exemplar()} | Usuário: {relatorio.get_usuario()} | Data de Empréstimo: {relatorio.get_data_emprestimo()} | Data de Devolução: {relatorio.get_data_devolucao()} - Débito: {"Sim" if relatorio.get_debito() == True else "Não"}')
                                                     print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
@@ -542,19 +544,35 @@ if __name__ == '__main__':
                                     case 2: #gerar relatório reservas
                                         print('Relatório de Reservas')
                                         try:
-                                            consulta_data_inicio = input('Informe a data de início da consulta (dd/mm/aaaa): ')
-                                            consulta_data_fim = input('Informe a data de fim da consulta (dd/mm/aaaa): ')
-                                            consultas = reserva_dao.relatorio_reservas(consulta_data_inicio, consulta_data_fim)
-                                            if consultas == []:
+                                            reserva_data_inicio = input('Informe a data de início da consulta (dd/mm/aaaa): ')
+                                            reserva_data_fim = input('Informe a data de fim da consulta (dd/mm/aaaa): ')
+                                            reservas = reserva_dao.relatorio_reservas(reserva_data_inicio, reserva_data_fim)
+                                            if reservas == []:
                                                 print('Nenhum empréstimo encontrado no período informado.')
                                             else:
-                                                for consulta in consultas:
+                                                for consulta in reservas:
                                                     print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
                                                     print(f'Reserva: Livro : {consulta.get_livro()} | Exemplar: {consulta.get_exemplar()} | Usuário: {consulta.get_usuario()} | Data de Inicio: {consulta.get_data_reserva()} | Data do Vencimento: {consulta.get_data_vencimento()} - Ativo: {"Sim" if consulta.get_ativo() else "Não"}')
                                                     print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
                                         except:
                                             print('Data inválida, favor informe novamente.')
                                         input('Pressione enter para continuar...')
+                                    case 3: #gerar relatório pendencias
+                                        print('Relatório de Pendências')
+                                        # try:
+                                        pendencia_data_inicio = input('Informe a data de início da consulta (dd/mm/aaaa): ')
+                                        pendencia_data_fim = input('Informe a data de fim da consulta (dd/mm/aaaa): ')
+                                        pendencias = emprestimo_dao.relatorio_pendencias(pendencia_data_inicio, pendencia_data_fim)
+                                        if pendencias == []:
+                                            print('Nenhum empréstimo encontrado no período informado.')
+                                        else:
+                                            for consulta in pendencias:
+                                                print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
+                                                print(f'Reserva: Livro : {consulta.get_livro()} | Exemplar: {consulta.get_exemplar()} | Usuário: {consulta.get_usuario()} | Data de Inicio: {consulta.get_data_emprestimo()} | Data do Vencimento: {consulta.get_data_devolucao()} - Débito: {"Sim" if consulta.get_debito() else "Não"}')
+                                                print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
+                                        # except:
+                                        #     print('Data inválida, favor informe novamente.')
+                                        # input('Pressione enter para continuar...')
                 case 4: #funcionario
                     while True:
                         print('''
