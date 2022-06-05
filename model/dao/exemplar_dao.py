@@ -5,16 +5,19 @@ class ExemplarDao:
     def __init__(self):
         pass
 
-    def listar(self):
+    @staticmethod
+    def listar():
         return exemplares
 
-    def listar_nomes(self):
+    @staticmethod
+    def listar_nomes():
         nomes = []
         for exemplar in exemplares:
             nomes.append(exemplar.get_titulo())
         return nomes
 
-    def add_exemplar(self, exemplar):
+    @staticmethod
+    def add_exemplar(exemplar):
         exemplares.append(exemplar)
 
     def remover_exemplar(self, id_excluir):

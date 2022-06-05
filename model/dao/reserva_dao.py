@@ -14,8 +14,8 @@ class ReservaDao:
         new_id_reserva = reservas[-1].get_id() + 1
         for usuario in usuarios:
             if usuario.get_id() == usuario_id and livros[livro_id].get_numero_exemplares() != 0:
+                exemplar = livros[livro_id].get_exemplares()[numero_exemplar]
                 if livros[livro_id].get_numero_exemplares() != 0:
-                    exemplar = livros[livro_id].get_exemplares()[numero_exemplar]
                     if not exemplar.is_reservado():
                         if not usuario.get_debito():
                             if exemplar.get_circulacao():

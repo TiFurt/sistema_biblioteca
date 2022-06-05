@@ -54,7 +54,7 @@ class Livro:
     def set_editora(self, editora) -> None:
         self.__editora = editora
 
-    def set_categorias(self, categorias) -> list:
+    def set_categorias(self, categorias):
         self.__categorias = categorias
 
     def get_exemplares(self) -> list:

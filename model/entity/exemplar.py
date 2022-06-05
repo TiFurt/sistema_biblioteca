@@ -2,7 +2,7 @@ from model.entity.livro import Livro
 
 
 class Exemplar(Livro):
-    def __init__(self, titulo, autores, ano, isbn, edicao, editora, categorias, numero_exemplar, circulacao, emprestimo ,reservado) -> None:
+    def __init__(self, titulo, autores, ano, isbn, edicao, editora, categorias, numero_exemplar, circulacao, emprestimo=False ,reservado=False):
         Livro.__init__(self, titulo, autores, ano, isbn, edicao, editora, categorias)
         self.__numero_exemplar = numero_exemplar
         self.__circulacao = circulacao
