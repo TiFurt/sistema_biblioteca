@@ -30,27 +30,30 @@ class EmprestimoDao:
                     exemplar = livros[livro_id].get_exemplares()[numero_exemplar]
                     if not exemplar.get_emprestimo():
                         if not exemplar.is_reservado() or (exemplar.is_reservado() and usuario_id ==  exemplar.get_reserva().get_usuario()):
+                            if exemplar.is_reservado():
+                                usuario.set_emprestimos(usuario.get_emprestimos - 1)
                             exemplar.set_not_reservado()
                             if not usuario.get_debito():
-                                    if (usuario.get_tipo() == 'professor' and usuario.get_emprestimos() < 5) or (usuario.get_tipo() != 'professor' and usuario.get_emprestimos() < 3):
-                                        if exemplar.get_circulacao():
-                                            if usuario.get_tipo() == 'professor':
-                                                exemplar.set_emprestimo(True)
-                                                usuario.set_emprestimos(usuario.get_emprestimos() + 1) 
-                                                emprestimos.append(Emprestimo(exemplar.get_titulo(), exemplar.get_numero_exemplares(), date.today().strftime("%d/%m/%Y"), (date.today() + timedelta(days=15)).strftime("%d/%m/%Y"), False, int(usuario.get_id()), int(new_id_emprestimo)))
-                                                return f'Livro {exemplar.get_titulo()} emprestado para {usuario.get_nome()} até {(date.today() + timedelta(days=15)).strftime("%d/%m/%Y")}.'
-                                            else:
-                                                exemplar.set_emprestimo(True)
-                                                usuario.set_emprestimos(usuario.get_emprestimos() + 1) 
-                                                emprestimos.append(Emprestimo(exemplar.get_titulo(), exemplar.get_numero_exemplares(), date.today().strftime("%d/%m/%Y"), (date.today() + timedelta(days=10)).strftime("%d/%m/%Y"), False, int(usuario.get_id()), int(new_id_emprestimo)))
-                                                return f'Livro {exemplar.get_titulo()} emprestado para {usuario.get_nome()} até {(date.today() + timedelta(days=10)).strftime("%d/%m/%Y")}.'
+                                if (usuario.get_tipo() == 'professor' and usuario.get_emprestimos() < 5) or (usuario.get_tipo() != 'professor' and usuario.get_emprestimos() < 3):
+                                    usuario.set_emprestimos(usuario.get_emprestimos() + 1) 
+                                    if exemplar.get_circulacao():
+                                        if usuario.get_tipo() == 'professor':
+                                            emprestimo = Emprestimo(exemplar.get_titulo(), exemplar.get_numero_exemplares(), date.today().strftime("%d/%m/%Y"), (date.today() + timedelta(days=15)).strftime("%d/%m/%Y"), False, int(usuario.get_id()), int(new_id_emprestimo))
+                                            exemplar.set_emprestimo_atual(emprestimo)
+                                            emprestimos.append(emprestimo)
+                                            return f'Livro {exemplar.get_titulo()} emprestado para {usuario.get_nome()} até {(date.today() + timedelta(days=15)).strftime("%d/%m/%Y")}.'
                                         else:
-                                            exemplar.set_emprestimo(True)
-                                            usuario.set_emprestimos(usuario.get_emprestimos() + 1) 
-                                            emprestimos.append(Emprestimo(exemplar.get_titulo(), exemplar.get_numero_exemplares(), date.today().strftime("%d/%m/%Y"), (date.today() + timedelta(days=1)).strftime("%d/%m/%Y"), False, int(usuario.get_id()), int(new_id_emprestimo)))
-                                            return f'Livro {exemplar.get_titulo()} emprestado para {usuario.get_nome()} até {(date.today() + timedelta(days=1)).strftime("%d/%m/%Y")}.'
+                                            emprestimo = Emprestimo(exemplar.get_titulo(), exemplar.get_numero_exemplares(), date.today().strftime("%d/%m/%Y"), (date.today() + timedelta(days=10)).strftime("%d/%m/%Y"), False, int(usuario.get_id()), int(new_id_emprestimo))
+                                            exemplar.set_emprestimo_atual(emprestimo)
+                                            emprestimos.append(emprestimo)
+                                            return f'Livro {exemplar.get_titulo()} emprestado para {usuario.get_nome()} até {(date.today() + timedelta(days=10)).strftime("%d/%m/%Y")}.'
                                     else:
-                                        return f'Usuário {usuario.get_nome()} ultrapassou o limite de empréstimos.'
+                                        emprestimo = Emprestimo(exemplar.get_titulo(), exemplar.get_numero_exemplares(), date.today().strftime("%d/%m/%Y"), (date.today() + timedelta(days=1)).strftime("%d/%m/%Y"), False, int(usuario.get_id()), int(new_id_emprestimo))
+                                        exemplar.set_emprestimo(emprestimo)
+                                        emprestimos.append(emprestimo)
+                                        return f'Livro {exemplar.get_titulo()} emprestado para {usuario.get_nome()} até {(date.today() + timedelta(days=1)).strftime("%d/%m/%Y")}.'
+                                else:
+                                    return f'Usuário {usuario.get_nome()} ultrapassou o limite de empréstimos.'
                             else:
                                 return f'Usuário {usuario.get_nome()} está com débito em atraso'
                         else:
@@ -80,7 +83,7 @@ class EmprestimoDao:
                         for livro in livros:
                             if livro.get_titulo() == emprestimo.get_livro() and livro.get_numero_exemplares() != 0:
                                 exemplar = livro.get_exemplares()[emprestimo.get_exemplar()-1]
-                                exemplar.set_emprestimo(False)
+                                exemplar.set_not_emprestado()
                                 emprestimo.set_debito(False)
                                 return f'Livro {exemplar.get_titulo()} devolvido.'
 

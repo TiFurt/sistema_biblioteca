@@ -30,3 +30,9 @@ class Reserva:
     def get_ativo(self):
         return self.__ativo
 
+    def set_data_vencimento(self, data_vencimento):
+        self.__data_vencimento = data_vencimento
+
+    def set_ativo(self, ativo):
+        self.__ativo = ativo
+

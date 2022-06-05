@@ -9,6 +9,7 @@ class Exemplar(Livro):
         self.__emprestimo = emprestimo
         self.__is_reservado = reservado
         self.__reserva = None
+        self.__emprestimo_atual = None
 
     def get_numero_exemplares(self):
         return self.__numero_exemplar
@@ -21,6 +22,7 @@ class Exemplar(Livro):
 
     def is_reservado(self):
         return self.__is_reservado
+
 
     def set_reserva(self, reserva):
         self.__reserva = reserva
@@ -42,3 +44,13 @@ class Exemplar(Livro):
     def set_emprestimo(self, emprestimo):
         self.__emprestimo = emprestimo
 
+    def get_emprestimo_atual(self):
+        return self.__emprestimo_atual
+
+    def set_emprestimo_atual(self, emprestimo_atual):
+        self.__emprestimo_atual = emprestimo_atual
+        self.__emprestimo = True
+    
+    def set_not_emprestado(self):
+        self.__emprestimo_atual = None
+        self.__emprestimo = False

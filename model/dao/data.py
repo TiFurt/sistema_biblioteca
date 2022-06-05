@@ -47,7 +47,8 @@ emprestimos =[
 tipos_usuario =[
     'funcionario',
     'aluno',
-    'professor'
+    'professor',
+    'gerente'
 ]
 
 usuarios =[
@@ -57,7 +58,7 @@ usuarios =[
 ]
 
 reservas =[
-    Reserva('Clean Code', 2, '30/05/2022', '05/06/2022', 2, 0, True),
+    Reserva('Clean Code', 2, '30/05/2022', '09/06/2022', 2, 0, True),
 ]
 
 for reserva in reservas:

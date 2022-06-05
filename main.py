@@ -3,16 +3,17 @@ from model.dao.livro_dao import LivroDao
 from model.dao.exemplar_dao import ExemplarDao
 from model.dao.categoria_dao import CategoriaDao
 from model.dao.emprestimo_dao import EmprestimoDao
+from model.dao.reserva_dao import ReservaDao
 from model.entity.livro import Livro
 from model.entity.exemplar import Exemplar
 from model.entity.categoria import Categoria
-from datetime import date
 
 if __name__ == '__main__':
     livro_dao = LivroDao()
     exemplar_dao = ExemplarDao()
     categoria_dao = CategoriaDao()
     emprestimo_dao = EmprestimoDao()
+    reserva_dao = ReservaDao()
 
 
     try:
@@ -503,36 +504,63 @@ if __name__ == '__main__':
                     while True:
                         print('''
                                 Menu Gerente
-                                1- Gerar Relatório
+                                1- Relatórios
+                                2- Controlar Usuarios
                                 0- Sair''')
                         opcao_gerente = int(input('Digite sua opção: '))
                         match opcao_gerente:
                             case 0: #sair
                                 print('Saindo...')
-                                break
-                            case 1: #gerar relatório
-                                print('Gerar Relatório')
-                                try:
-                                    relatorio_data_inicio = input('Informe a data de início do relatório (dd/mm/aaaa): ')
-                                    relatorio_data_fim = input('Informe a data de fim do relatório (dd/mm/aaaa): ')
-                                    relatorios = emprestimo_dao.relatorio_emprestimos(relatorio_data_inicio, relatorio_data_fim)
-                                    if relatorios == []:
-                                        print('Nenhum empréstimo encontrado no período informado.')
-                                    else:
-                                        for relatorio in relatorios:
-                                            print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
-                                            print(f'Emprestimo: Livro : {relatorio.get_livro()} | Exemplar: {relatorio.get_exemplar()} | Usuário: {relatorio.get_usuario()} | Data de Empréstimo: {relatorio.get_data_emprestimo()} | Data de Devolução: {relatorio.get_data_devolucao()} - Débito: {"Sim" if relatorio.get_debito() == True else "Não"}')
-                                            print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
-                                except:
-                                    print('Data inválida, favor informe novamente.')
-                                input('Pressione enter para continuar...')
+                                pass
+                            case 1: #menu relatóro
+                                print('''
+                                Menu Relatórios
+                                1- Gerar Relatório Emprestimos
+                                2- Gerar Relatório Devoluções
+                                0- Sair''')
+                                opcao_relatorios = int(input('Digite sua opção: '))
+                                match opcao_relatorios:
+                                    case 0: #sair
+                                        print('Saindo...')
+                                        break
+                                    case 1: #gerar relatório emprestimos
+                                        print('Relatório de Emprestimos')
+                                        try:
+                                            relatorio_data_inicio = input('Informe a data de início do relatório (dd/mm/aaaa): ')
+                                            relatorio_data_fim = input('Informe a data de fim do relatório (dd/mm/aaaa): ')
+                                            relatorios = emprestimo_dao.relatorio_emprestimos(relatorio_data_inicio, relatorio_data_fim)
+                                            if relatorios == []:
+                                                print('Nenhum empréstimo encontrado no período informado.')
+                                            else:
+                                                for relatorio in relatorios:
+                                                    print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
+                                                    print(f'Emprestimo: Livro : {relatorio.get_livro()} | Exemplar: {relatorio.get_exemplar()} | Usuário: {relatorio.get_usuario()} | Data de Empréstimo: {relatorio.get_data_emprestimo()} | Data de Devolução: {relatorio.get_data_devolucao()} - Débito: {"Sim" if relatorio.get_debito() == True else "Não"}')
+                                                    print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
+                                        except:
+                                            print('Data inválida, favor informe novamente.')
+                                        input('Pressione enter para continuar...')
+                                    case 2: #gerar relatório reservas
+                                        print('Relatório de Reservas')
+                                        try:
+                                            consulta_data_inicio = input('Informe a data de início da consulta (dd/mm/aaaa): ')
+                                            consulta_data_fim = input('Informe a data de fim da consulta (dd/mm/aaaa): ')
+                                            consultas = reserva_dao.relatorio_reservas(consulta_data_inicio, consulta_data_fim)
+                                            if consultas == []:
+                                                print('Nenhum empréstimo encontrado no período informado.')
+                                            else:
+                                                for consulta in consultas:
+                                                    print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
+                                                    print(f'Reserva: Livro : {consulta.get_livro()} | Exemplar: {consulta.get_exemplar()} | Usuário: {consulta.get_usuario()} | Data de Inicio: {consulta.get_data_reserva()} | Data do Vencimento: {consulta.get_data_vencimento()} - Ativo: {"Sim" if consulta.get_ativo() else "Não"}')
+                                                    print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
+                                        except:
+                                            print('Data inválida, favor informe novamente.')
+                                        input('Pressione enter para continuar...')
                 case 4: #funcionario
                     while True:
                         print('''
                                 Menu Funcionário
                                 1- Controle de Empréstimos
                                 2- Controle de Reserva
-                                3- Controle de Usuário
                                 0 - Sair''')
                         menu_funcionario = int(input('Digite sua opção: '))
                         match menu_funcionario:
@@ -566,7 +594,7 @@ if __name__ == '__main__':
                                             cont_exemp = 0
                                             for exemplar in livro_dao.get_exemplares(livro_id_emprestimo):
                                                 cont_exemp += 1
-                                                print(f'{cont_exemp} - {exemplar.get_titulo()} - Circulação: {"1 dia útil" if exemplar.get_circulacao() else "10 dias corridos"} - ' 
+                                                print(f'{cont_exemp} - {exemplar.get_titulo()} - Circulação: {"10 dias corridos" if exemplar.get_circulacao() else "1 dia útil"} - ' 
                                                 f'Emprestimo: {"Emprestado" if exemplar.get_emprestimo() else "Não Emprestado"} - Reserva: {"Reservado" if exemplar.is_reservado() else "Não Reservado"}')
                                             exemplar_id_emprestimo = int(input('Digite sua opção(0 para sair): ')) - 1    
                                             if exemplar_id_emprestimo == -1:
@@ -586,7 +614,7 @@ if __name__ == '__main__':
                                             else:
                                                 for consulta in consultas:
                                                     print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
-                                                    print(f'{consulta.get_usuario()} Emprestimo: Livro : {consulta.get_livro()} | Exemplar: {consulta.get_exemplar()} | Usuário: {consulta.get_usuario()} | Data de Empréstimo: {consulta.get_data_emprestimo()} | Data de Devolução: {consulta.get_data_devolucao()} - Débito: {"Sim" if consulta.get_debito() == True else "Não"}')
+                                                    print(f'Emprestimo: Livro : {consulta.get_livro()} | Exemplar: {consulta.get_exemplar()} | Usuário: {consulta.get_usuario()} | Data de Empréstimo: {consulta.get_data_emprestimo()} | Data de Devolução: {consulta.get_data_devolucao()} - Débito: {"Sim" if consulta.get_debito() == True else "Não"}')
                                                     print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
                                         except:
                                             print('Data inválida, favor informe novamente.')
@@ -619,6 +647,60 @@ if __name__ == '__main__':
                                         print('Saindo...')
                                         pass
                                     case 1: #nova reserva
-                                        pass
+                                        print('Nova Reserva')
+                                        usuario_id_reserva = int(input('Digite o ID do usuário: '))
+                                        cont = 0
+                                        for livro in livro_dao.listar_nomes():
+                                            cont += 1
+                                            print(f'{cont} - {livro}')
+                                        livro_id_reserva = int(input('Digite sua opção(0 para sair): ')) - 1
+                                        if livro_id_reserva == -1:
+                                            print('Saindo...')
+                                            pass
+                                        else:
+                                            cont_exemp = 0
+                                            for exemplar in livro_dao.get_exemplares(livro_id_reserva):
+                                                cont_exemp += 1
+                                                print(f'{cont_exemp} - {exemplar.get_titulo()} - Circulação: {"10 dias corridos" if exemplar.get_circulacao() else "NÃO PODE SER RESERVADO"} - ' 
+                                                f'Emprestimo: {"Emprestado" if exemplar.get_emprestimo() else "Não Emprestado"} - Reserva: {"Reservado" if exemplar.is_reservado() else "Não Reservado"}')
+                                            exemplar_id_reserva = int(input('Digite sua opção(0 para sair): ')) - 1    
+                                            if exemplar_id_reserva == -1:
+                                                print('Saindo...')
+                                                pass
+                                            else:
+                                                print(reserva_dao.nova_reserva(usuario_id_reserva, livro_id_reserva, exemplar_id_reserva))
+                                                input('Pressione enter para continuar...')                                        
+                                    case 2: #consultar reservas
+                                        print('Consultar Reservas')
+                                        try:
+                                            consulta_data_inicio = input('Informe a data de início da consulta (dd/mm/aaaa): ')
+                                            consulta_data_fim = input('Informe a data de fim da consulta (dd/mm/aaaa): ')
+                                            consultas = reserva_dao.relatorio_reservas(consulta_data_inicio, consulta_data_fim)
+                                            if consultas == []:
+                                                print('Nenhum empréstimo encontrado no período informado.')
+                                            else:
+                                                for consulta in consultas:
+                                                    print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
+                                                    print(f'Reserva: Livro : {consulta.get_livro()} | Exemplar: {consulta.get_exemplar()} | Usuário: {consulta.get_usuario()} | Data de Inicio: {consulta.get_data_reserva()} | Data do Vencimento: {consulta.get_data_vencimento()} - Ativo: {"Sim" if consulta.get_ativo() else "Não"}')
+                                                    print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
+                                        except:
+                                            print('Data inválida, favor informe novamente.')
+                                        input('Pressione enter para continuar...')
+                                    case 3: #cancelar reserva
+                                        print('Devolução')
+                                        reserva_id_devolucao = int(input('Digite o ID do usuário: '))
+                                        pendencias = reserva_dao.pendencias_reserva(reserva_id_devolucao)
+                                        if pendencias == []:
+                                                print('Nenhuma pendência encontrada.')
+                                        else:
+                                            for pendencia in pendencias:
+                                                print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
+                                                print(f'{pendencias.index(pendencia)+1} - Livro: {pendencia.get_livro()} - Exemplar: {pendencia.get_exemplar()} - Usuário: {pendencia.get_usuario()} - Data de Empréstimo: {pendencia.get_data_reserva()} - Data de Devolução: {pendencia.get_data_vencimento()} - Ativo: {"Sim" if pendencia.get_ativo() else "Não"}')
+                                                print('----------------------------------------------------------------------------------------------------------------------------------------------------------')
+                                            select_pendencia = (int(input('Digite o número da pendência deseja devolver: '))-1)
+                                            id_pendencia = pendencias[select_pendencia].get_id()
+                                            print(reserva_dao.cancelamento_reserva(id_pendencia))
+                                            input('Pressione enter para continuar...')
+
     except ValueError:
         print('Valor invalido')
